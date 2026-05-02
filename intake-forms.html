@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>two cents — before we meet</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --blush: #E8C4C0;
+    --blush-dark: #D4A9A4;
+    --chocolate: #3D1F0F;
+    --oxblood: #7A2020;
+    --stone: #8C7B6B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--chocolate); }
+  .stripe { height: 12px; background: repeating-linear-gradient(90deg, var(--chocolate) 0px, var(--chocolate) 18px, var(--blush) 18px, var(--blush) 36px); }
+  nav { background: var(--chocolate); padding: 14px 40px; display: flex; align-items: center; gap: 10px; }
+  nav img { width: 28px; height: 28px; object-fit: contain; }
+  nav span { font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; color: var(--cream); }
+  .tabs { background: var(--chocolate); display: flex; border-top: 1px solid rgba(232,196,192,0.15); }
+  .tab { padding: 12px 28px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blush-dark); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+  .tab:hover { color: var(--blush); }
+  .tab.active { color: var(--blush); border-bottom-color: var(--blush); }
+  .form-page { display: none; }
+  .form-page.active { display: block; }
+  .form-hero { background: var(--blush); padding: 48px 60px; position: relative; overflow: hidden; }
+  .form-hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(61,31,15,0.1) 2px, transparent 2px); background-size: 36px 36px; }
+  .form-hero-inner { position: relative; z-index: 1; max-width: 600px; }
+  .form-tier-badge { display: inline-block; background: var(--chocolate); color: var(--blush); font-size: 9px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding: 5px 12px; border-radius: 2px; margin-bottom: 14px; }
+  .form-hero h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 48px; color: var(--chocolate); line-height: 1; letter-spacing: -1px; margin-bottom: 10px; }
+  .form-hero p { font-size: 14px; color: var(--stone); line-height: 1.6; }
+  .form-body { max-width: 680px; margin: 0 auto; padding: 48px 40px 64px; }
+  .question { margin-bottom: 36px; }
+  .question-label { font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; color: var(--chocolate); margin-bottom: 6px; line-height: 1.4; }
+  .question-hint { font-size: 12px; color: var(--stone); margin-bottom: 14px; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: white; border: 1.5px solid var(--blush-dark); border-radius: 3px; cursor: pointer; transition: all 0.15s; user-select: none; }
+  .option:hover { border-color: var(--chocolate); background: var(--cream); }
+  .option.selected { border-color: var(--chocolate); background: var(--cream); }
+  .option-dot { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--blush-dark); flex-shrink: 0; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
+  .option-dot::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--chocolate); opacity: 0; transition: opacity 0.15s; }
+  .option.selected .option-dot { border-color: var(--chocolate); }
+  .option.selected .option-dot::after { opacity: 1; }
+  .option-square { border-radius: 2px; }
+  .option-square::after { border-radius: 1px; }
+  .option-text { font-size: 13px; color: var(--chocolate); line-height: 1.4; }
+  textarea { width: 100%; background: white; border: 1.5px solid var(--blush-dark); border-radius: 3px; padding: 14px 16px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--chocolate); outline: none; resize: vertical; transition: border-color 0.15s; }
+  textarea:focus { border-color: var(--chocolate); }
+  textarea::placeholder { color: var(--stone); }
+  .optional-tag { font-size: 10px; color: var(--stone); letter-spacing: 0.08em; text-transform: uppercase; margin-left: 8px; }
+  .submit-row { margin-top: 40px; display: flex; align-items: center; gap: 16px; }
+  .btn-submit { background: var(--chocolate); color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 32px; border-radius: 2px; border: none; cursor: pointer; transition: background 0.2s; }
+  .btn-submit:hover { background: var(--oxblood); }
+  .submit-note { font-size: 12px; color: var(--stone); font-style: italic; }
+  .success-screen { display: none; text-align: center; padding: 80px 40px; }
+  .success-screen h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 42px; color: var(--chocolate); margin-bottom: 12px; }
+  .success-screen p { font-size: 14px; color: var(--stone); line-height: 1.7; }
+  @media (max-width: 768px) {
+    .form-hero { padding: 36px 24px; }
+    .form-hero h1 { font-size: 34px; }
+    .form-body { padding: 36px 20px 48px; }
+    nav { padding: 14px 20px; }
+    .tabs { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stripe"></div>
+<nav>
+  <img src="data:image/png;base64,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" alt="two cents">
+  <span>two cents</span>
+</nav>
+<div class="tabs">
+  <div class="tab active" onclick="showForm('intro', event)">the intro audit</div>
+  <div class="tab" onclick="showForm('full', event)">the full audit</div>
+  <div class="tab" onclick="showForm('deep', event)">the deep dive</div>
+</div>
+<div class="stripe"></div>
+
+<!-- INTRO AUDIT -->
+<div class="form-page active" id="form-intro">
+  <div class="form-hero">
+    <div class="form-hero-inner">
+      <div class="form-tier-badge">the intro audit · $75 · 30 min</div>
+      <h1>before we meet</h1>
+      <p>two quick questions so i can show up prepared. takes under a minute.</p>
+    </div>
+  </div>
+  <div class="form-body">
+    <div class="success-screen" id="success-intro">
+      <h2>see you soon.</h2>
+      <p>i'll be in touch shortly to confirm your session.<br>looking forward to it. 🪙</p>
+    </div>
+    <form id="formspree-intro" action="https://formspree.io/f/mgodvjaq" method="POST">
+      <input type="hidden" name="tier" value="the intro audit">
+      <div class="question">
+        <div class="question-label">what brings you here?</div>
+        <div class="question-hint">pick one</div>
+        <div class="options">
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i don't know where to start</span><input type="radio" name="what_brings_you_here" value="i don't know where to start" style="display:none"></label>
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i have a specific goal i'm working toward</span><input type="radio" name="what_brings_you_here" value="i have a specific goal i'm working toward" style="display:none"></label>
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i want a second opinion on what i'm already doing</span><input type="radio" name="what_brings_you_here" value="i want a second opinion on what i'm already doing" style="display:none"></label>
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i feel overwhelmed and don't know why</span><input type="radio" name="what_brings_you_here" value="i feel overwhelmed and don't know why" style="display:none"></label>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-label">anything you want me to know before we meet? <span class="optional-tag">optional</span></div>
+        <textarea name="anything_else" rows="4" placeholder="no pressure — anything helps."></textarea>
+      </div>
+      <div class="submit-row">
+        <button type="submit" class="btn-submit">submit →</button>
+        <span class="submit-note">i'll be in touch shortly.</span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- FULL AUDIT -->
+<div class="form-page" id="form-full">
+  <div class="form-hero">
+    <div class="form-hero-inner">
+      <div class="form-tier-badge">the full audit · $150 · 60 min</div>
+      <h1>before we meet</h1>
+      <p>a few questions so i can make the most of our time. takes 2-3 minutes.</p>
+    </div>
+  </div>
+  <div class="form-body">
+    <div class="success-screen" id="success-full">
+      <h2>see you soon.</h2>
+      <p>i'll be in touch shortly to confirm your session.<br>looking forward to it. 🪙</p>
+    </div>
+    <form id="formspree-full" action="https://formspree.io/f/mgodvjaq" method="POST">
+      <input type="hidden" name="tier" value="the full audit">
+      <div class="question">
+        <div class="question-label">how would you describe your current financial situation?</div>
+        <div class="question-hint">pick one</div>
+        <div class="options">
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i have no savings or investments yet</span><input type="radio" name="financial_situation" value="no savings or investments yet" style="display:none"></label>
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i have some savings but no investments</span><input type="radio" name="financial_situation" value="some savings, no investments" style="display:none"></label>
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i have both but feel lost about next steps</span><input type="radio" name="financial_situation" value="both savings and investments but feel lost" style="display:none"></label>
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i'm doing okay but want a clear plan</span><input type="radio" name="financial_situation" value="doing okay, want a clear plan" style="display:none"></label>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-label">what areas do you want to cover?</div>
+        <div class="question-hint">pick all that apply</div>
+        <div class="options">
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">budgeting / cash flow</span><input type="checkbox" name="areas[]" value="budgeting / cash flow" style="display:none"></label>
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">debt payoff</span><input type="checkbox" name="areas[]" value="debt payoff" style="display:none"></label>
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">investing for the first time</span><input type="checkbox" name="areas[]" value="investing for the first time" style="display:none"></label>
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">savings goals</span><input type="checkbox" name="areas[]" value="savings goals" style="display:none"></label>
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">salary / benefits / negotiation</span><input type="checkbox" name="areas[]" value="salary / benefits / negotiation" style="display:none"></label>
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">buying a home</span><input type="checkbox" name="areas[]" value="buying a home" style="display:none"></label>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-label">what does a win look like after our session?</div>
+        <textarea name="what_does_a_win_look_like" rows="3" placeholder="i walk away knowing..."></textarea>
+      </div>
+      <div class="question">
+        <div class="question-label">anything else you want me to know? <span class="optional-tag">optional</span></div>
+        <textarea name="anything_else" rows="3" placeholder="context, concerns, questions — anything helps."></textarea>
+      </div>
+      <div class="submit-row">
+        <button type="submit" class="btn-submit">submit →</button>
+        <span class="submit-note">i'll be in touch shortly.</span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- DEEP DIVE -->
+<div class="form-page" id="form-deep">
+  <div class="form-hero">
+    <div class="form-hero-inner">
+      <div class="form-tier-badge">the deep dive · $250 + $150/mo · 90 min</div>
+      <h1>before we meet</h1>
+      <p>a few more questions to help me understand where you are and where you want to go. takes about 5 minutes.</p>
+    </div>
+  </div>
+  <div class="form-body">
+    <div class="success-screen" id="success-deep">
+      <h2>see you soon.</h2>
+      <p>i'll be in touch shortly to confirm your session.<br>looking forward to it. 🪙</p>
+    </div>
+    <form id="formspree-deep" action="https://formspree.io/f/mgodvjaq" method="POST">
+      <input type="hidden" name="tier" value="the deep dive">
+      <div class="question">
+        <div class="question-label">walk me through your current financial picture.</div>
+        <div class="question-hint">income, major expenses, any debt, savings, investments — whatever feels relevant.</div>
+        <textarea name="financial_picture" rows="5" placeholder="e.g. i make $80k, have $15k in student loans, $5k in savings, no investments yet..."></textarea>
+      </div>
+      <div class="question">
+        <div class="question-label">what's your biggest financial goal in the next 12 months?</div>
+        <textarea name="biggest_goal" rows="3" placeholder="be as specific as you can."></textarea>
+      </div>
+      <div class="question">
+        <div class="question-label">what areas do you want to cover?</div>
+        <div class="question-hint">pick all that apply</div>
+        <div class="options">
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">budgeting / cash flow</span><input type="checkbox" name="areas[]" value="budgeting / cash flow" style="display:none"></label>
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">debt payoff</span><input type="checkbox" name="areas[]" value="debt payoff" style="display:none"></label>
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">investing for the first time</span><input type="checkbox" name="areas[]" value="investing for the first time" style="display:none"></label>
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">savings goals</span><input type="checkbox" name="areas[]" value="savings goals" style="display:none"></label>
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">salary / benefits / negotiation</span><input type="checkbox" name="areas[]" value="salary / benefits / negotiation" style="display:none"></label>
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">buying a home</span><input type="checkbox" name="areas[]" value="buying a home" style="display:none"></label>
+          <label class="option" onclick="toggleOption(this)"><div class="option-dot option-square"></div><span class="option-text">retirement planning</span><input type="checkbox" name="areas[]" value="retirement planning" style="display:none"></label>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-label">where do you feel most stuck?</div>
+        <div class="question-hint">pick one</div>
+        <div class="options">
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i know what to do but can't seem to do it</span><input type="radio" name="where_stuck" value="know what to do but can't do it" style="display:none"></label>
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i don't know what to do at all</span><input type="radio" name="where_stuck" value="don't know what to do at all" style="display:none"></label>
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i'm doing things but not sure if they're right</span><input type="radio" name="where_stuck" value="doing things but unsure if right" style="display:none"></label>
+          <label class="option" onclick="selectOption(this)"><div class="option-dot"></div><span class="option-text">i have competing priorities and can't prioritize</span><input type="radio" name="where_stuck" value="competing priorities" style="display:none"></label>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-label">what have you already tried that hasn't worked? <span class="optional-tag">optional</span></div>
+        <textarea name="what_hasnt_worked" rows="3" placeholder="apps, methods, previous advice..."></textarea>
+      </div>
+      <div class="question">
+        <div class="question-label">anything else you want me to know? <span class="optional-tag">optional</span></div>
+        <textarea name="anything_else" rows="3" placeholder="context, concerns, questions — anything helps."></textarea>
+      </div>
+      <div class="submit-row">
+        <button type="submit" class="btn-submit">submit →</button>
+        <span class="submit-note">i'll be in touch shortly.</span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="stripe"></div>
+
+<script>
+function showForm(tier, e) {
+  document.querySelectorAll('.form-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('form-' + tier).classList.add('active');
+  e.target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function selectOption(el) {
+  const group = el.closest('.options');
+  group.querySelectorAll('.option').forEach(o => {
+    o.classList.remove('selected');
+    o.querySelector('input').checked = false;
+  });
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+}
+
+function toggleOption(el) {
+  el.classList.toggle('selected');
+  el.querySelector('input').checked = el.classList.contains('selected');
+}
+
+// Handle Formspree AJAX submissions
+['intro', 'full', 'deep'].forEach(tier => {
+  const form = document.getElementById('formspree-' + tier);
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const data = new FormData(form);
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (response.ok) {
+      form.style.display = 'none';
+      document.getElementById('success-' + tier).style.display = 'block';
+    }
+  });
+});
+</script>
+
+</body>
+</html>
