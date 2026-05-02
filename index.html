@@ -399,12 +399,6 @@
     border-radius: 2px;
   }
 
-  @media (max-width: 768px) {
-    .about-editorial { grid-template-columns: 1fr; }
-    .about-photo-panel { min-height: 300px; }
-    .about-text-panel { padding: 40px 24px; }
-  }
-
 /* NEWSLETTER SECTION */
   .newsletter-section {
     background: var(--blush);
@@ -719,25 +713,6 @@
   }
 
   /* RESPONSIVE */
-  @media (max-width: 768px) {
-    nav { padding: 12px 20px; }
-    .nav-links { display: none; }
-    .hero-inner { grid-template-columns: 1fr; padding: 0 24px; }
-    .hero-photo { display: none; }
-    .hero-title { font-size: 56px; }
-    .about { grid-template-columns: 1fr; padding: 60px 24px; }
-    .about-photo-wrap { display: none; }
-    section { padding: 60px 24px; }
-    .content-cards { grid-template-columns: 1fr 1fr; }
-    .coaching-grid { grid-template-columns: 1fr; }
-    .coaching-photo { display: none; }
-    footer { flex-direction: column; gap: 16px; text-align: center; padding: 20px 24px; }
-  }
-
-  @media (max-width: 768px) {
-    .about-layout { grid-template-columns: 1fr; }
-    .about-photo-col { position: static; max-width: 200px; }
-  }
 
 
   /* ABOUT EDITORIAL */
@@ -817,12 +792,6 @@
     background: var(--blush);
     padding: 5px 12px;
     border-radius: 2px;
-  }
-
-  @media (max-width: 768px) {
-    .about-editorial { grid-template-columns: 1fr; }
-    .about-photo-panel { min-height: 360px; }
-    .about-text-panel { padding: 40px 24px; }
   }
 
 
@@ -962,14 +931,6 @@
     object-position: center 60%;
   }
 
-  @media (max-width: 768px) {
-    .about-editorial { grid-template-columns: 1fr; }
-    .about-photo-panel { min-height: 380px; }
-    .about-text-panel { padding: 40px 24px; }
-    .photo-strip { grid-template-columns: 1fr; height: auto; }
-    .photo-strip-item { height: 340px; }
-  }
-
 
   /* FULL PHOTOS */
   .full-photo {
@@ -1000,12 +961,6 @@
     background: rgba(61,31,15,0.6);
     padding: 8px 16px;
     line-height: 1.5;
-  }
-
-  @media (max-width: 768px) {
-    .full-photo { width: 90%; }
-    .full-photo-overlay { left: 16px; right: 16px; bottom: 16px; }
-    .full-photo-overlay span { font-size: 13px; }
   }
 
 
@@ -1043,11 +998,6 @@
     mix-blend-mode: multiply;
     border: none;
     outline: none;
-  }
-
-  @media (max-width: 768px) {
-    .photos-creative { flex-direction: column; align-items: center; padding: 40px 24px; gap: 20px; }
-    .photo-a, .photo-b { width: 70%; margin: 0; }
   }
 
 
@@ -1097,10 +1047,6 @@
     box-shadow: 4px 4px 0px var(--chocolate);
   }
 
-  @media (max-width: 768px) {
-    .hero-photos { display: none; }
-  }
-
 /* HERO PHOTOS */
   .hero-photos {
     position: absolute;
@@ -1138,10 +1084,6 @@
     margin-bottom: -4px;
     -webkit-mask-image: radial-gradient(ellipse 88% 92% at 50% 50%, black 55%, transparent 100%);
     mask-image: radial-gradient(ellipse 88% 92% at 50% 50%, black 55%, transparent 100%);
-  }
-
-  @media (max-width: 768px) {
-    .hero-photos { display: none; }
   }
 
 
@@ -1294,12 +1236,6 @@
     letter-spacing: -0.2px;
   }
 
-  @media (max-width: 768px) {
-    .cats-section { padding: 40px 24px; }
-    .cats-inner { flex-direction: column; align-items: center; }
-    .cat-photo--wide, .cat-photo--portrait { width: 70%; transform: none; margin-top: 0; }
-  }
-
 
   .subscribe-cta-layout {
     display: flex;
@@ -1336,6 +1272,93 @@
     font-size: 15px;
     color: var(--stone);
     margin-top: 14px;
+  }
+
+
+  @media (max-width: 768px) {
+
+    /* NAV */
+    nav { padding: 12px 20px; }
+    .nav-links { display: none; }
+
+    /* HERO */
+    .hero { min-height: auto; padding: 32px 20px 40px; }
+    .hero-inner { padding: 0; }
+    .hero-title { font-size: 52px; }
+    .hero-photos {
+      position: relative;
+      bottom: auto;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+      padding: 0 20px;
+    }
+    .hero-photo-left {
+      width: 38%;
+      transform: rotate(-3deg);
+      outline: none;
+    }
+    .hero-photo-right {
+      width: 34%;
+      transform: rotate(2deg);
+      outline: none;
+    }
+    .disco-svg { display: none; }
+    .subscribe-row { flex-direction: column; width: 100%; gap: 8px; }
+    .email-input { width: 100%; box-sizing: border-box; }
+    .btn-primary { width: 100%; text-align: center; }
+    .hero-actions { width: 100%; align-items: center; }
+
+    /* ABOUT */
+    .about-editorial { grid-template-columns: 1fr; }
+    .about-photo-panel { min-height: 320px; }
+    .about-text-panel { padding: 36px 20px; }
+    .about-text-panel h2 { font-size: 22px; max-width: 100%; }
+    .about-text-panel p { max-width: 100%; }
+
+    /* NEWSLETTER */
+    .newsletter-section { padding: 48px 20px; }
+    .newsletter-section h2 { font-size: 30px; max-width: 100%; }
+    .content-cards { grid-template-columns: 1fr; gap: 10px; }
+
+    /* COACHING */
+    .coaching { padding: 48px 20px; }
+    .coaching-grid { max-width: 100%; }
+    .coaching h2 { font-size: 32px; }
+    .tier { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .tier-price { font-size: 20px; }
+    .tier-duration { text-align: left; }
+    .btn-book { width: 100%; text-align: center; box-sizing: border-box; }
+
+    /* SUBSCRIBE CTA */
+    .subscribe-cta { padding: 48px 20px; }
+    .subscribe-cta-layout { flex-direction: column; align-items: center; gap: 20px; }
+    .cat-left { transform: none; order: 2; }
+    .cat-right { transform: none; margin-top: 0; order: 3; }
+    .subscribe-cta-inner { width: 100%; order: 1; }
+    .cat-left .cat-photo--wide { width: 160px; }
+    .cat-right .cat-photo--portrait { width: 120px; }
+    .subscribe-form { flex-direction: column; align-items: center; width: 100%; }
+    .subscribe-form input { width: 100%; box-sizing: border-box; }
+    .subscribe-cta h2 { font-size: 36px; }
+
+    /* PHOTOS */
+    .photos-creative { flex-direction: column; align-items: center; padding: 40px 20px; }
+    .photo-a, .photo-b { width: 70%; margin: 0; }
+
+    /* CATS */
+    .cats-section { padding: 40px 20px; }
+    .cats-inner { flex-direction: row; justify-content: center; align-items: flex-end; gap: 16px; }
+    .cat-photo--wide { width: 160px; transform: rotate(-3deg); }
+    .cat-photo--portrait { width: 100px; transform: rotate(4deg); }
+
+    /* FOOTER */
+    footer { flex-direction: column; gap: 14px; text-align: center; padding: 20px 24px; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 12px; }
+
+    /* GENERAL */
+    section { padding: 48px 20px; }
   }
 
 </style>
